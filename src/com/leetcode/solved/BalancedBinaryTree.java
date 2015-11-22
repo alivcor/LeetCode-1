@@ -1,4 +1,4 @@
-package com.leetcode.tried;
+package com.leetcode.solved;
 
 public class BalancedBinaryTree {
 	public static class TreeNode {
