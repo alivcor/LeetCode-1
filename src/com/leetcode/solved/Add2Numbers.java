@@ -1,7 +1,7 @@
 package com.leetcode.solved;
 
 public class Add2Numbers {
-	static class ListNode {
+	public static class ListNode {
 		      int val;
 		      ListNode next;
 		      ListNode(int x) { val = x; }
@@ -11,6 +11,7 @@ public class Add2Numbers {
 			}
 		      
 	}
+	
 	
 	public static ListNode convertToList(int number){
 		ListNode head = null;
