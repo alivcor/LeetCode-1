@@ -36,7 +36,7 @@ public class BinTreeLevelOrd2 {
 			list.add(root.val);
 			listTraversal.add(list);
 		}else{
-		    listTraversal.get(level).add(root.val);
+		    listTraversal.get(level-1).add(root.val);
 		}
 		levelOrderBottom(root.left, listTraversal, level+1);
 		levelOrderBottom(root.right, listTraversal, level+1);
