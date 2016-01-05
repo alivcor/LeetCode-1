@@ -6,6 +6,9 @@ public class ValidAnagram {
 	 * Two strings are Anagram when characters in one string are permutation of other.
 	 * 
 	 * In the solution below, we will assume the characters are ASCII.
+	 * If we are sure that all characters are lower case/upper case and alphabets,
+	 * we can decrement each char by 'A' or 'a' and keep an array of size 26.
+	 * 
 	 * If any one of the strings in null, both should be null.
 	 * If the length of two strings doesnot match. Return False.
 	 * 
