@@ -1,5 +1,6 @@
 package com.leetcode.solved;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class ContainsDuplicate {
@@ -25,4 +26,13 @@ public class ContainsDuplicate {
         
         return false;
     }
+	/*
+	 * If we add all the elements in the array to a set, 
+	 * and if the size of the array is equal to the size of the set: All Unique
+	 * Else atleast one duplicate.
+	 * 
+	 */
+	public boolean containsDuplicateOneLiner(int nums[]){
+		return !(nums.length == (new HashSet<>(Arrays.asList(nums))).size());
+	}
 }
