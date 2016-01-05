@@ -1,5 +1,7 @@
 package com.leetcode.solved;
 
+import java.util.HashMap;
+
 public class ValidAnagram {
 
 	/*
@@ -40,4 +42,33 @@ public class ValidAnagram {
         return true;
     
     }
+	/*
+	 * In the case where the characters are not ASCII but Unicode
+	 * It would not be a good idea to create such a long count array.
+	 * Better idea would be to use a HashMap to store the Characters.
+	 * 
+	 * Same above logic applied.
+	 */
+	public boolean isAnagramUnicode(String s, String t){
+		if(s == null || t == null) return (s == null && t == null);
+        if(s.length() != t.length()) return false;
+        
+        HashMap<Character, Integer> countChars = new HashMap<>();
+        for(int i = 0; i < s.length(); i++){
+        	if(countChars.get(s.charAt(i)) == null)
+        		countChars.put(s.charAt(i), 0);
+        	countChars.put(s.charAt(i), countChars.get(s.charAt(i)) + 1);
+        	
+        }
+        
+        for(int i = 0; i < t.length(); i++){
+        	if(countChars.get(t.charAt(i)) == null)
+        		return false;
+        	countChars.put(t.charAt(i), countChars.get(t.charAt(i)) - 1);
+        	if(countChars.get(t.charAt(i)) < 0) return false;
+        }
+        
+        
+        return true;
+	}
 }
