@@ -10,11 +10,4 @@ public class PowerOfTwo {
 		if(n <= 0) return false;
 		return ((n&(n-1)) == 0) ? true : false;
     }
-	public static void main(String[] args) {
-		System.out.println(isPowerOfTwo(8));
-		System.out.println(isPowerOfTwo(1023));
-		System.out.println(isPowerOfTwo(1024));
-
-	}
-
 }
