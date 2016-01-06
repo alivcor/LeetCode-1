@@ -1,8 +1,15 @@
 package com.leetcode.solved;
 
-import java.util.Scanner;
 import java.util.Stack;
-
+/*
+ * The idea is to use two stacks.
+ * Use one of them to push values in the LIFO manner. Pop using other.
+ * As soon as pop is requested, check if there is any item in the other stack.
+ * Yes: Return
+ * No: Add all the items from push stack to pop stack.
+ * Note that the sequence of insertion would reverse and thus would become FIFO.
+ * 
+ */
 class ImplementQueueUsingStack {
 	
 	Stack<Integer> stack1 = new Stack<Integer>();
