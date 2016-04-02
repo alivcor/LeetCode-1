@@ -12,33 +12,21 @@ public class ReconstructItinerary {
         if(tickets == null || tickets.length == 0) return Collections.emptyList();
         
         Map<String,List<String>> ticketMap = new HashMap<String,List<String>>();
-        for(String[] currTicket : tickets){
-            if(currTicket.length != 2) continue;
-            String origin = currTicket[0];
-            if(ticketMap.get(origin) == null) ticketMap.put(origin,new ArrayList<String>());
-            ticketMap.get(origin).add(currTicket[1]);
-        }
+        for(String[] ticket : tickets)
+        	ticketMap.computeIfAbsent(ticket[0], k -> new ArrayList()).add(ticket[1]);
         
-        for(String key : ticketMap.keySet()){
-            Collections.sort(ticketMap.get(key));
-        }
+        ticketMap.forEach((k,v) -> Collections.sort(v));
         
-        String[] travel = new String[tickets.length + 1];
-        
+        List<String> travel = new ArrayList<>(Collections.nCopies(tickets.length + 1, ""));
         if(!itinerary(ticketMap, "JFK",travel,0))return Collections.emptyList();
-        
-        List<String> result = new ArrayList<String>();
-        for(int i = 0; i < travel.length; i++){
-        	result.add(travel[i]);
-        }
-        return result;
+        return travel;
     }
     
     private static  boolean itinerary(Map<String,List<String>> ticketMap,
-                String location, String[] travel, int index){
+                String location, List<String> travel, int index){
             
-            travel[index] = location;
-            if(index == travel.length - 1) return true;
+            travel.set(index,location);
+            if(index == travel.size() - 1) return true;
             
             if(ticketMap.get(location) == null) return false;
             
@@ -52,7 +40,6 @@ public class ReconstructItinerary {
                 }
                 ticketMap.get(location).set(i, place);
             }
-            
             return false;
         
     }
