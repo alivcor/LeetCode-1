@@ -4,16 +4,20 @@ public class GameOfLife {
 
 	private int getNextState(int[][] board, int x, int y){
         int countLiveN = 0;
-        if(x > 0) countLiveN += board[x-1][y];
-        if(y > 0) countLiveN += board[x][y-1];
-        if(x > 0 && y > 0) countLiveN += board[x-1][y-1];
-        if(x < board.length - 1) countLiveN += board[x+1][y];
-        if(y < board[0].length - 1) countLiveN += board[x][y+1];
-        if(x < board.length - 1 && y < board[0].length - 1) countLiveN += board[x+1][y+1];
-        if(x > 0 && y < board[0].length - 1) countLiveN += board[x-1][y+1];
-        if(x < board.length - 1 && y > 0) countLiveN += board[x+1][y-1];
+        if(x > 0) countLiveN += getOldState(board[x-1][y]);
+        if(y > 0) countLiveN += getOldState(board[x][y-1]);
+        if(x > 0 && y > 0) countLiveN += getOldState(board[x-1][y-1]);
+        if(x < board.length - 1) countLiveN += getOldState(board[x+1][y]);
+        if(y < board[0].length - 1) countLiveN += getOldState(board[x][y+1]);
+        if(x < board.length - 1 && y < board[0].length - 1) countLiveN += getOldState(board[x+1][y+1]);
+        if(x > 0 && y < board[0].length - 1) countLiveN += getOldState(board[x-1][y+1]);
+        if(x < board.length - 1 && y > 0) countLiveN += getOldState(board[x+1][y-1]);
         
         return nextState(countLiveN, board[x][y]);
+    }
+    
+    private int getOldState(int value){
+        return value&1;
     }
     
     private int nextState(int liveNbrs, int currentState){
@@ -25,17 +29,16 @@ public class GameOfLife {
     }
     public void gameOfLife(int[][] board) {
         if(board == null || board.length == 0 || board[0].length == 0) return;
-        int[][] nextState = new int[board.length][board[0].length];
         
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[0].length; j++){
-                nextState[i][j] = getNextState(board,i,j);
+                board[i][j] = (getNextState(board,i,j)<<1)|board[i][j];
             }
         }
         
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[0].length; j++){
-                board[i][j] = nextState[i][j];
+                board[i][j] = board[i][j]>>1;
             }
         }
         
