@@ -17,14 +17,7 @@ public class MergeKSortedList {
         if(lists == null || lists.length == 0) return null;
         ListNode head = new ListNode(0);
         ListNode current = head;
-        PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(lists.length,new Comparator<ListNode>() {
-			@Override
-			public int compare(ListNode o1, ListNode o2) {
-				if(o2.val > o1.val) return -1;
-				if(o1.val > o2.val) return 1;
-				return 0;
-			}
-		});  
+        PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(lists.length,(a,b) -> Integer.compare(a.val, b.val));  
         for(int i = 0; i < lists.length; i++) {
             if(lists[i] != null) queue.add(lists[i]);
         }
@@ -36,8 +29,7 @@ public class MergeKSortedList {
         	}
         	current.next = top;
         	current = current.next;
-        }
-        
+        }    
         return head.next;
     }
 }
