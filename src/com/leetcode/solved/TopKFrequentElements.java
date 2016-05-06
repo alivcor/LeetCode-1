@@ -19,9 +19,7 @@ public class TopKFrequentElements {
         
         List<Integer> result = new ArrayList<Integer>(countMap.keySet());
         result.sort((a,b) -> (countMap.get(b)).compareTo(countMap.get(a)));
-        if(k >= countMap.size()) return result;
-        
-        return result.subList(0, k);
+        return (k >= countMap.size()) ? result : result.subList(0, k);
 	}
 
 	public static void main(String[] args){
