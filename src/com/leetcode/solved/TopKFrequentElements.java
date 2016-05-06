@@ -12,10 +12,8 @@ public class TopKFrequentElements {
         if(nums == null || nums.length == 0) return Collections.EMPTY_LIST;
         
         Map<Integer, Integer> countMap = new HashMap<Integer, Integer>();
-        for(int value : nums){
-        	if(!countMap.containsKey(value)) countMap.put(value, 0);
-        	countMap.put(value, countMap.get(value) + 1);
-        }
+        for(int value : nums)
+        	countMap.put(value, countMap.getOrDefault(value, 0) + 1);
         
         List<Integer> result = new ArrayList<Integer>(countMap.keySet());
         result.sort((a,b) -> (countMap.get(b)).compareTo(countMap.get(a)));
