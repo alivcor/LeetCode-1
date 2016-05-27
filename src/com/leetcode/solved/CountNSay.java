@@ -9,7 +9,6 @@ public class CountNSay {
         sb.append("1X");
         for(int i = 0; i < n-1; i++){
         	StringBuilder updatedSb = new StringBuilder();
-        	char prev = sb.charAt(0);
         	int count = 1;
         	for(int j = 1; j < sb.length(); j++){
         		if(sb.charAt(j) == sb.charAt(j-1))count++;
