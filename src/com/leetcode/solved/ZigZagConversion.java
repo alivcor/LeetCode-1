@@ -1,4 +1,4 @@
-package com.leetcode.tried;
+package com.leetcode.solved;
 
 import java.util.stream.IntStream;
 
