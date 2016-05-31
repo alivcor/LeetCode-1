@@ -1,9 +1,6 @@
 package com.leetcode.solved;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class ThreeSumClosest {
 
