@@ -26,26 +26,13 @@ public class MergeIntervals {
 	public static List<Interval> merge(List<Interval> intervals) {
 		if(intervals == null || intervals.size() == 0) return Collections.emptyList();
 		
-		Collections.sort(intervals, new Comparator<Interval>() {
-
-			@Override
-			public int compare(Interval o1, Interval o2) {
-				// TODO Auto-generated method stub
-				if(o1.start > o2.start) return 1;
-				if(o1.start < o2.start) return -1;
-				return 0; 
-			}
-		});	
+		Collections.sort(intervals, (a,b) -> Integer.compare(a.start, b.start));	
 		List<Interval> result = new ArrayList<Interval>();
 		result.add(intervals.get(0));
-		int resultIndex = 0;
 		for(int i = 1; i < intervals.size(); i++){
-			if(result.get(resultIndex).end >= intervals.get(i).start){
-				result.get(resultIndex).end = Integer.max(result.get(resultIndex).end, intervals.get(i).end);
-			}else{
-				result.add(intervals.get(i));
-				resultIndex++;
-			}
+			if(result.get(result.size() - 1).end >= intervals.get(i).start)
+				result.get(result.size() - 1).end = Integer.max(result.get(result.size() - 1).end, intervals.get(i).end);
+			else result.add(intervals.get(i));
 		}
 		return result;
     }
