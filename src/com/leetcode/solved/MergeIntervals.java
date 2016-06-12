@@ -2,7 +2,6 @@ package com.leetcode.solved;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MergeIntervals {
@@ -25,8 +24,7 @@ public class MergeIntervals {
 	}
 	public static List<Interval> merge(List<Interval> intervals) {
 		if(intervals == null || intervals.size() == 0) return Collections.emptyList();
-		
-		Collections.sort(intervals, (a,b) -> Integer.compare(a.start, b.start));	
+		intervals.sort((a,b) -> Integer.compare(a.start, b.start));	
 		List<Interval> result = new ArrayList<Interval>();
 		result.add(intervals.get(0));
 		for(int i = 1; i < intervals.size(); i++){
