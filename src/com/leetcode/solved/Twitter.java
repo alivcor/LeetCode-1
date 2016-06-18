@@ -12,36 +12,42 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 public class Twitter {
+
 public static class User{
 		int userID;
-		Set<Integer> follows;
-		List<Tweet> tweets;
+		Set<Integer> userIFollow;
+		List<Tweet> myTweets;
 		public User(int userID) {
-			super();
 			this.userID = userID;
-			this.tweets = new ArrayList<Tweet>();
-			this.follows = new HashSet<>();
+			this.myTweets = new ArrayList<Tweet>();
+			this.userIFollow = new HashSet<>();
 		}
 		
+		/**Always add tweet to the zeroth position.
+		 * Since we need a maximum of 10 tweets in the news feed. Remove others.
+		 */
 		public void postTweet(int tweetID, int clock){
-			tweets.add(0,new Tweet(this.userID, tweetID, clock));
+			if(this.myTweets.size() == 10) myTweets.remove(9);
+			myTweets.add(0,new Tweet(this.userID, tweetID, clock));
 		}
 	}
 	
 	public static class Tweet{
-		int index;
+		int user;
 		int tweetID;
 		int clock;
-		public Tweet(int index, int tweetID, int clock) {
+		public Tweet(int user, int tweetID, int clock) {
 			super();
-			this.index = index;
+			this.user = user;
 			this.tweetID = tweetID;
 			this.clock = clock;
 		}
 		
 	}
     /** Initialize your data structure here. */
+	//Map userID vs User
 	Map<Integer, User> mapUsers;
+	//Time each tweet arrives
 	int clock;
     public Twitter() {
     	mapUsers = new HashMap<>();
@@ -55,21 +61,23 @@ public static class User{
     }
     
     /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    /**Work similar to merge K sorted list and stop when result size == 10.
+     * @param userId
+     * @return
+     */
     public List<Integer> getNewsFeed(int userId) {
         if(!mapUsers.containsKey(userId)) return Collections.emptyList();
         List<Integer> result = new ArrayList<>();
-        
-        
-        Set<Integer> follows = mapUsers.get(userId).follows;
-        Queue<Tweet> top10 = new PriorityQueue<>(10, (a,b) -> Integer.compare(b.clock, a.clock));
-        
-        List<Integer> folUsers = new ArrayList<>(follows);
+        List<Integer> folUsers = new ArrayList<>(mapUsers.get(userId).userIFollow);
         folUsers.add(userId);
+        
+        Queue<Tweet> top10 = new PriorityQueue<>(10, (a,b) -> Integer.compare(b.clock, a.clock));
         Map<Integer,Integer> usIndex = new HashMap<>();
         IntStream.range(0, folUsers.size()).forEach(i -> usIndex.put(folUsers.get(i),0));
+        
         for(Integer user : folUsers){
-        	if(mapUsers.get(user).tweets.size() != 0){
-        		top10.add(mapUsers.get(user).tweets.get(usIndex.get(user)));
+        	if(mapUsers.get(user).myTweets.size() != 0){
+        		top10.add(mapUsers.get(user).myTweets.get(usIndex.get(user)));
         		usIndex.put(user,usIndex.get(user)+1);
         	}
         }
@@ -77,9 +85,9 @@ public static class User{
         while(!top10.isEmpty() && result.size() < 10){
         	Tweet topTw = top10.poll();
         	result.add(topTw.tweetID);
-        	if(mapUsers.get(topTw.index).tweets.size() > usIndex.get(topTw.index)){
-        		top10.add(mapUsers.get(topTw.index).tweets.get(usIndex.get(topTw.index)));
-        		usIndex.put(topTw.index,usIndex.get(topTw.index)+1);
+        	if(mapUsers.get(topTw.user).myTweets.size() > usIndex.get(topTw.user)){
+        		top10.add(mapUsers.get(topTw.user).myTweets.get(usIndex.get(topTw.user)));
+        		usIndex.put(topTw.user,usIndex.get(topTw.user)+1);
         	}
         }
         return result;
@@ -92,41 +100,15 @@ public static class User{
         if(!mapUsers.containsKey(followerId)) mapUsers.put(followerId, new User(followerId));
         if(!mapUsers.containsKey(followeeId)) mapUsers.put(followeeId, new User(followeeId));
         
-        mapUsers.get(followerId).follows.add(followeeId);
+        mapUsers.get(followerId).userIFollow.add(followeeId);
     }
     
     /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
     public void unfollow(int followerId, int followeeId) {
         if(!mapUsers.containsKey(followeeId) || !mapUsers.containsKey(followerId))return;
-    	mapUsers.get(followerId).follows.remove(followeeId);
+    	mapUsers.get(followerId).userIFollow.remove(followeeId);
     }
-    
-    public static void main(String args[]){
-    	Twitter twitter = new Twitter();
 
-    	// User 1 posts a new tweet (id = 5).
-    	twitter.postTweet(1, 9);
-
-    	// User 1's news feed should return a list with 1 tweet id -> [5].
-    	System.out.println(twitter.getNewsFeed(1));
-
-    	// User 1 follows user 2.
-    	twitter.follow(1, 2);
-
-    	// User 2 posts a new tweet (id = 6).
-    	twitter.postTweet(2, 15);
-
-    	// User 1's news feed should return a list with 2 tweet ids -> [6, 5].
-    	// Tweet id 6 should precede tweet id 5 because it is posted after tweet id 5.
-    	System.out.println(twitter.getNewsFeed(1));;
-
-    	// User 1 unfollows user 2.
-    	twitter.unfollow(1, 2);
-
-    	// User 1's news feed should return a list with 1 tweet id -> [5],
-    	// since user 1 is no longer following user 2.
-    	System.out.println(twitter.getNewsFeed(1));;
-    }
 }
 
 /**
