@@ -2,6 +2,20 @@ package com.leetcode.solved;
 
 public class ValidPerfectSquare {
 	
+	
+	public static boolean isPerfectNW(int num){
+		if(num < 0) return false;
+		if(num <= 1) return true;
+		
+		double val = num;
+		while(val * val > num){
+			val = val - (val*val + num)/(2*val);
+		}
+		
+		System.out.println(val);
+		return (int)val * (int)val == num;
+	}
+	
 	public static boolean isPerfectSquare(int num) {
 		if(num < 0) return false;
 		if(num <= 1) return true;
@@ -23,7 +37,9 @@ public class ValidPerfectSquare {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(isPerfectSquare(2147483647));
+		System.out.println(isPerfectNW(16));
+		
+		
 
 	}
 
